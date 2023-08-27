@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.Map;
 
 public interface EmployeeService {
-    List<Employee> findEmployeeByStatus();
+    List<Employee> findEmployeeByStatus(int pageNo, int pageSize, String sortBy, String sortDir);
+
+//    List<Employee> findEmployeeByStatus();
 
     Employee createEmployee(EmployeeDTO employeeDTO);
 
@@ -19,4 +21,5 @@ Employee updateEmployee(Long id, EmployeeDTO employeeDetails);
 
     ResponseEntity<Map<String, Boolean>> deleteEmployee(Long id);
 
+    List<Employee> findAll();
 }

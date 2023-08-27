@@ -23,6 +23,7 @@ public class SignupController {
            return new ResponseEntity<>("User not created, come again later!", HttpStatus.BAD_REQUEST);
        }
        return new ResponseEntity<>(createdUser, HttpStatus.CREATED);
+
     }
 
 }

@@ -10,7 +10,7 @@ import {MaterialModule} from 'src/material.module';
 import {HttpClientModule} from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
 import { PopupComponent } from './popup/popup.component';
-import { EmployeeComponent } from './customer/employee.component';
+import { EmployeeComponent } from './employee/employee.component';
 
 @NgModule({
   declarations: [

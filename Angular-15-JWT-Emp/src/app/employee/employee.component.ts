@@ -1,12 +1,12 @@
-import { Component, ViewChild } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
+import { Component, ViewChild, OnInit } from '@angular/core';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../service/auth.service';
 import {PopupComponent} from '../popup/popup.component';
 import { MatDialog } from '@angular/material/dialog';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-employee',
@@ -14,45 +14,57 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./employee.component.css']
 })
 
-export class EmployeeComponent {
+export class EmployeeComponent implements OnInit {
+
+  pageEvent: PageEvent;
+  displayedColumns: string[] = ['id', 'firstName','lastName', 'emailId', 'mobileNumber', 'action'];
 
   constructor(
     private service: AuthService,
     private toastr: ToastrService,
     private matDialog: MatDialog,
+    
     private router: Router) 
     {
-      this.loadEmployee();
+      // this.loadEmployee();
     };
 
   customerlist: any;
   dataSource: any;
+
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  accessdata: any;
-  haveedit = true;
-  haveadd = true;
-  havedelete = true;
+  page = 0;
+  size = 5;
 
   ngAfterViewInit(): void {
 
   }
 
-  loadEmployee() {
-    this.service.GetAllCustomer().subscribe(res => {
-    
-      this.customerlist = JSON.parse(res);
-      this.dataSource = new MatTableDataSource(this.customerlist);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-    });
+  ngOnInit(): void {
+    this.initialDataSource(this.page, this.size);
   }
 
-  displayedColumns: string[] = ['id', 'firstName','lastName', 'emailId', 'mobileNumber', 'action'];
+  initialDataSource(page: number, size: number) {
+    this.service.GetAllCustomer(page, size, "id", "asc")
+    .pipe(
+      map((employeeData) => {
+        employeeData = JSON.parse(employeeData);
+        employeeData.itemsPerPage = size;
+        this.dataSource = (employeeData);
+      })
+    ).subscribe()
+  }
+
+  onPaginateChange(event: PageEvent) {
+    this.page = event.pageIndex;
+    this.size = event.pageSize;
+    this.initialDataSource(this.page, this.size);
+  }
 
   updateEmployee(id: string) {
-    
     const popup = this.matDialog.open(PopupComponent,{
       data: {
         title: 'Edit',
@@ -62,7 +74,7 @@ export class EmployeeComponent {
 
     popup.afterClosed().subscribe(()=>{
       console.log("popup closed")
-      this.loadEmployee();
+      this.initialDataSource(this.page, this.size);
     });
     
   }
@@ -70,15 +82,13 @@ export class EmployeeComponent {
   removeEmployee(id: string) {
     this.service.DeleteEmployee(id).subscribe(result=>{
       this.toastr.warning("Employee Deleted Successfully");
-      this.loadEmployee();
+      this.initialDataSource(this.page, this.size);
     },
     (err) => {
       console.log('err.....', err, err?.status)
     })
   }
 
-
-  
   addEmployee() {
    const popup = this.matDialog.open(PopupComponent,{
       data: {
@@ -88,7 +98,7 @@ export class EmployeeComponent {
     });
     popup.afterClosed().subscribe(()=>{
       console.log("popup closed")
-      this.loadEmployee();
+      this.initialDataSource(this.page, this.size);
     })
   }
 

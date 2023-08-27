@@ -8,6 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,19 +25,32 @@ public class EmployeeServiceImpl implements EmployeeService{
 
 
     @Override
-    public List<Employee> findEmployeeByStatus() {
-       return employeeRepository.findEmployeeByStatus(false);
+    public List<Employee> findEmployeeByStatus(int pageNo, int pageSize, String sortBy, String sortDir) {
+
+//        String sortDir="asc";
+//        String sortBy="id";
+        Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+//        int pageNo=0;
+//        int pageSize=5;
+        // create Pageable instance
+        Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
+
+        return employeeRepository.findEmployeeByStatus(pageable,false);
+//        return employeeRepository.findAll(pageable);
     }
 
     @Override
     public Employee createEmployee(EmployeeDTO employeeDTO) {
 
-        Employee employee = new Employee();
-        employee.setFirstName(employeeDTO.getFirstName());
-        employee.setLastName(employeeDTO.getLastName());
-        employee.setEmailId(employeeDTO.getEmailId());
-        employee.setMobileNumber(employeeDTO.getMobileNumber());
-        return employeeRepository.save(employee);
+            Employee employee = new Employee();
+            employee.setFirstName(employeeDTO.getFirstName());
+            employee.setLastName(employeeDTO.getLastName());
+            employee.setEmailId(employeeDTO.getEmailId());
+            employee.setMobileNumber(employeeDTO.getMobileNumber());
+            return employeeRepository.save(employee);
+
     }
 
 //    @Override
@@ -69,6 +87,11 @@ public class EmployeeServiceImpl implements EmployeeService{
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
         return ResponseEntity.ok(response);
+    }
+
+    @Override
+    public List<Employee> findAll() {
+         return employeeRepository.findAll();
     }
 
 }

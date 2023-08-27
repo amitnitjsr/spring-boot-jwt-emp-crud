@@ -1,10 +1,13 @@
 package com.springjwt.controllers;
 
+import com.springjwt.dto.APIResponse;
 import com.springjwt.dto.EmployeeDTO;
 import com.springjwt.entities.Employee;
 import com.springjwt.repositories.EmployeeRepository;
 import com.springjwt.services.employee.EmployeeService;
+import com.springjwt.util.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,14 +25,36 @@ public class EmployeeController {
     @Autowired
     private EmployeeService employeeService;
 
+//    @GetMapping("/{field}")
+//    private APIResponse<List<Product>> getProductsWithSort(@PathVariable String field) {
+//        List<Product> allProducts = service.findProductsWithSorting(field);
+//        return new APIResponse<>(allProducts.size(), allProducts);
+//    }
+//
+//    @GetMapping("/pagination/{offset}/{pageSize}")
+//    private APIResponse<Page<Product>> getProductsWithPagination(@PathVariable int offset, @PathVariable int pageSize) {
+//        Page<Product> productsWithPagination = service.findProductsWithPagination(offset, pageSize);
+//        return new APIResponse<>(productsWithPagination.getSize(), productsWithPagination);
+//    }
+
     @GetMapping("/employees")
-    public List<Employee> findEmployeeByStatus(){
-        return employeeService.findEmployeeByStatus();
+    public APIResponse<List<Employee>> findEmployeeByStatus(
+            @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
+            @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
+            @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
+            @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir
+
+    ){
+//      return employeeService.findEmployeeByStatus( pageNo,  pageSize,  sortBy,  sortDir);
+        List<Employee> employee = employeeService.findEmployeeByStatus( pageNo,  pageSize,  sortBy,  sortDir);
+        List<Employee> employeeTotal = employeeService.findAll();
+        return new APIResponse<>(employeeTotal.size(), employee);
     }
+
 
     @PostMapping("/employees")
     public Employee createEmployee(@RequestBody EmployeeDTO employeeDTO) {
-        return employeeService.createEmployee(employeeDTO);
+            return employeeService.createEmployee(employeeDTO);
     }
 
     @GetMapping("/employees/{id}")

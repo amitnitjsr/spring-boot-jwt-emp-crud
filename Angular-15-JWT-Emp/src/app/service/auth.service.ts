@@ -1,8 +1,21 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { catchError, map } from 'rxjs/operators';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { Employee } from '../model/employee.service';
 
 const BASE_URL = ['http://localhost:8080/'];
+
+export interface EmployeeData {
+  items: Employee[],
+  meta: {
+    totalItems: number;
+    itemCount: number;
+    itemsPerPage: number;
+    totalPages: number;
+    currentPage: number;
+  }
+}
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -30,8 +43,12 @@ export class AuthService {
     return this.http.post(BASE_URL + "authenticate", loginRequest)
   }
 
-  GetAllCustomer(): Observable<any> {
-    return this.http.get(BASE_URL + 'api/v1/employees', httpOptions, 
+  GetAllCustomer( pageNo: number,  pageSize: number,  sortBy: string,  sortDir: string): Observable<any> {
+    return this.http.get(BASE_URL + `api/v1/employees?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=${sortBy}&sortDir=${sortDir}`, httpOptions
+    )
+    .pipe(
+      map((data) => data),
+      catchError(err => throwError(err))
     );
   }
 

@@ -16,15 +16,17 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public UserDTO createUser(SignupDTO signupDTO) {
-        User user = new User();
-        user.setName(signupDTO.getName());
-        user.setEmail(signupDTO.getEmail());
-        user.setPassword(new BCryptPasswordEncoder().encode(signupDTO.getPassword()));
-        User createdUser = userRepository.save(user);
-        UserDTO userDTO = new UserDTO();
-        userDTO.setId(createdUser.getId());
-        userDTO.setEmail(createdUser.getEmail());
-        userDTO.setName(createdUser.getName());
-        return userDTO;
+
+            User user = new User();
+            user.setName(signupDTO.getName());
+            user.setEmail(signupDTO.getEmail());
+            user.setPassword(new BCryptPasswordEncoder().encode(signupDTO.getPassword()));
+            User createdUser = userRepository.save(user);
+            UserDTO userDTO = new UserDTO();
+            userDTO.setId(createdUser.getId());
+            userDTO.setEmail(createdUser.getEmail());
+            userDTO.setName(createdUser.getName());
+            return userDTO;
+
     }
 }

@@ -15,7 +15,7 @@ export class HomeComponent {
   ){}
 
   goToEmployeeList() {
-    this.router.navigate(['/customer']);
+    this.router.navigate(['/employee']);
   }
 
 }
