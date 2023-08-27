@@ -1,10 +1,10 @@
 package com.springjwt.controllers;
 
-import com.springjwt.model.Employee;
+import com.springjwt.dto.EmployeeDTO;
+import com.springjwt.entities.Employee;
 import com.springjwt.repositories.EmployeeRepository;
 import com.springjwt.services.employee.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,14 +23,13 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     @GetMapping("/employees")
-
     public List<Employee> findEmployeeByStatus(){
         return employeeService.findEmployeeByStatus();
     }
 
     @PostMapping("/employees")
-    public Employee createEmployee(@RequestBody Employee employee) {
-        return employeeService.createEmployee(employee);
+    public Employee createEmployee(@RequestBody EmployeeDTO employeeDTO) {
+        return employeeService.createEmployee(employeeDTO);
     }
 
     @GetMapping("/employees/{id}")
@@ -40,7 +39,7 @@ public class EmployeeController {
     }
 
     @PutMapping("/employees/{id}")
-    public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, @RequestBody Employee employeeDetails){
+    public ResponseEntity<Employee> updateEmployee(@PathVariable Long id, @RequestBody EmployeeDTO employeeDetails){
         Employee updatedEmployee = employeeService.updateEmployee(id,employeeDetails);
         return ResponseEntity.ok(updatedEmployee);
     }

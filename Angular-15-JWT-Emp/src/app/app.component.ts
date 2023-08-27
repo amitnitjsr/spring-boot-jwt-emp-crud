@@ -17,4 +17,9 @@ export class AppComponent {
     localStorage.clear();
     this.route.navigate(['/login'])
   }
+
+  // parentMethod(){
+  //   console.log("parentMethod()")
+  // }
+
 }

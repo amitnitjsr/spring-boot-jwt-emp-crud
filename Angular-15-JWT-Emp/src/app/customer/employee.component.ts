@@ -77,6 +77,8 @@ export class EmployeeComponent {
     })
   }
 
+
+  
   addEmployee() {
    const popup = this.matDialog.open(PopupComponent,{
       data: {
@@ -90,4 +92,7 @@ export class EmployeeComponent {
     })
   }
 
+  // parentMethod(){
+  //   console.log("parentMethod")
+  // }
 }

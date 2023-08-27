@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit,Output, EventEmitter, Optional } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms'
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../service/auth.service';
@@ -11,21 +11,27 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 })
 export class PopupComponent implements OnInit {
 
+  @Output() testEvent = new EventEmitter();
+
   constructor(
     private builder: FormBuilder,
     private service: AuthService,
     private toastr: ToastrService,
-    private dialogref: MatDialogRef<PopupComponent>,
-     @Inject(MAT_DIALOG_DATA) public data: any) {
+    @Optional() private dialogref: MatDialogRef<PopupComponent>,
+    @Optional() @Inject(MAT_DIALOG_DATA) public data: any) {
 
   }
-  
 
   ngOnInit(): void {
     this.title = this.data?.title;
     if (this.data.id != '' && this.data.id != null) {
       this.loaduserdata(this.data.id);
     }
+  }
+
+  childMethod() {
+    console.log("childMethod")
+    this.testEvent.emit();
   }
 
   rolelist: any;
