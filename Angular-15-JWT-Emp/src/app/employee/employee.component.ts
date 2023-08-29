@@ -48,7 +48,7 @@ export class EmployeeComponent implements OnInit {
   }
 
   initialDataSource(page: number, size: number) {
-    this.service.GetAllCustomer(page, size, "id", "asc")
+    this.service.GetAllEmployee(page, size, "id", "asc")
     .pipe(
       map((employeeData) => {
         employeeData = JSON.parse(employeeData);

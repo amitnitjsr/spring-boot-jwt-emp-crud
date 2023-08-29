@@ -69,7 +69,7 @@ Closepopup(){
       })
     }
     else{
-      this.service.AddCustomer(this.registerform.value).subscribe(result=>{
+      this.service.AddEmployee(this.registerform.value).subscribe(result=>{
         this.toastr.success('Employee added successfully');
         this.Closepopup();
       });

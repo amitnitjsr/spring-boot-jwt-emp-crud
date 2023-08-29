@@ -43,7 +43,7 @@ export class AuthService {
     return this.http.post(BASE_URL + "authenticate", loginRequest)
   }
 
-  GetAllCustomer( pageNo: number,  pageSize: number,  sortBy: string,  sortDir: string): Observable<any> {
+  GetAllEmployee( pageNo: number,  pageSize: number,  sortBy: string,  sortDir: string): Observable<any> {
     return this.http.get(BASE_URL + `api/v1/employees?pageNo=${pageNo}&pageSize=${pageSize}&sortBy=${sortBy}&sortDir=${sortDir}`, httpOptions
     )
     .pipe(
@@ -52,7 +52,7 @@ export class AuthService {
     );
   }
 
-  AddCustomer(inputdata:any): Observable<any> {
+  AddEmployee(inputdata:any): Observable<any> {
     return this.http.post(BASE_URL + 'api/v1/employees',inputdata, httpOptions
     );
   }
