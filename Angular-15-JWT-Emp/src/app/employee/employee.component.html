@@ -5,7 +5,7 @@
     <mat-card-content>
         <div class="mat-elevation-z8">
             <button (click)="addEmployee()" mat-raised-button color="primary">Add Employee</button>
-            <table mat-table matSort  [dataSource]="dataSource.response">
+            <table mat-table matSort  [dataSource]="dataSource?.response">
           
               <!-- Name Column -->
               <ng-container matColumnDef="id">
@@ -51,8 +51,8 @@
             </table>
           
             <mat-paginator 
-            [length]="dataSource.totalItems"
-            [pageSize]="dataSource.itemsPerPage"
+            [length]="dataSource?.totalItems"
+            [pageSize]="dataSource?.itemsPerPage"
             [pageSizeOptions]="[5, 10, 20]"
             (page)="pageEvent = $event; onPaginateChange($event)"
             showFirstLastButtons
