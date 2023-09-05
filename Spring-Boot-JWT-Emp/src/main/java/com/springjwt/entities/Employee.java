@@ -1,8 +1,10 @@
 package com.springjwt.entities;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 
+@Builder
 @Entity
 @Table(name = "employee")
 @Data
@@ -26,5 +28,16 @@ public class Employee {
 
     @Column(name = "status", nullable = false)
     private boolean status = false;
+
+    public Employee(){}
+
+    public Employee(Long id, String firstName, String lastName, String emailId, String mobileNumber, boolean status){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.emailId = emailId;
+        this.mobileNumber = mobileNumber;
+        this.status = false;
+        this.id = id;
+    }
 
 }

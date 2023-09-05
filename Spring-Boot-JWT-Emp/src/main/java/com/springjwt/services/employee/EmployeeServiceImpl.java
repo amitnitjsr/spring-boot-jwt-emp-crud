@@ -27,18 +27,11 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Override
     public List<Employee> findEmployeeByStatus(int pageNo, int pageSize, String sortBy, String sortDir) {
 
-//        String sortDir="asc";
-//        String sortBy="id";
         Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
-
-//        int pageNo=0;
-//        int pageSize=5;
-        // create Pageable instance
         Pageable pageable = PageRequest.of(pageNo, pageSize, sort);
 
         return employeeRepository.findEmployeeByStatus(pageable,false);
-//        return employeeRepository.findAll(pageable);
     }
 
     @Override
